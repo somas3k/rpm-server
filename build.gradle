@@ -1,0 +1,35 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.0.M3'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'pl.edu.agh.im'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'com.h2database:h2'
+	compileOnly('org.projectlombok:lombok:1.18.4')
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	compile 'org.springframework.boot:spring-boot-starter-mail'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: 'junit', module: 'junit'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
