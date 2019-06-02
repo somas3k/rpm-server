@@ -6,7 +6,7 @@ jdk:
 
 script:
  - chmod +x ./gradlew
- - ./gradlew check
+ - ./gradlew check --stacktrace
 
 deploy:
   provider: heroku
