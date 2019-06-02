@@ -28,6 +28,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 		exclude group: 'junit', module: 'junit'
 	}
+	annotationProcessor 'org.projectlombok:lombok:1.18.4'
 }
 
 test {
