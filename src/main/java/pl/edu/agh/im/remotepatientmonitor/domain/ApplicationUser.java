@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,6 +36,9 @@ public class ApplicationUser {
 
     @JsonIgnore
     Long emailVerificationExpirationTime;
+
+    @OneToMany
+    List<Device> devices = new ArrayList<>();
 
     public ApplicationUser(Long id, String email, String fullName, String password, Boolean enabled, Long emailVerificationExpirationTime) {
         this.id = id;

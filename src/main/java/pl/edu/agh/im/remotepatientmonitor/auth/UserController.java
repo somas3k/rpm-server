@@ -64,6 +64,7 @@ public class UserController {
     public ResponseEntity logout() {
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("activate")
     public ResponseEntity activate(@RequestParam(value = "token") String token) {
         try {
