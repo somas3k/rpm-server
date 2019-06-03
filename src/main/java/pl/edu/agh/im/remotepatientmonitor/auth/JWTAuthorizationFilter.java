@@ -50,9 +50,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                         .setSigningKey(SECRET.getBytes())
                         .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
                 if(claimsJws.getHeader().get("type") != null) return null;
-                user = claimsJws
+                user = (String) claimsJws
                         .getBody()
-                        .getSubject();
+                        .get("name");
             } catch(Exception e) {
                 return null;
             }

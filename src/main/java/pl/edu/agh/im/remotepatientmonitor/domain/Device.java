@@ -1,5 +1,6 @@
 package pl.edu.agh.im.remotepatientmonitor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,21 @@ public class Device {
     private String id;
 
     @ManyToOne
+    @JsonIgnore
     private ApplicationUser user;
 
-    @OneToMany
+    private String deviceName;
+
+    public Device(String id, ApplicationUser user, String deviceName) {
+        this.id = id;
+        this.user = user;
+        this.deviceName = deviceName;
+    }
+
+    @OneToMany(mappedBy = "device")
+    @JsonIgnore
     List<HeartRateRecord> records = new ArrayList<>();
+
+
 
 }

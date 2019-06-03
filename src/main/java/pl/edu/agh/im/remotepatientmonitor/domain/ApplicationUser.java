@@ -37,7 +37,7 @@ public class ApplicationUser {
     @JsonIgnore
     Long emailVerificationExpirationTime;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     List<Device> devices = new ArrayList<>();
 
     public ApplicationUser(Long id, String email, String fullName, String password, Boolean enabled, Long emailVerificationExpirationTime) {
