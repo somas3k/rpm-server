@@ -6,6 +6,7 @@ import pl.edu.agh.im.remotepatientmonitor.domain.Device;
 import pl.edu.agh.im.remotepatientmonitor.domain.HeartRateRecord;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -18,7 +19,7 @@ public class HeartRateService {
     private DeviceRepository deviceRepository;
 
 
-    boolean saveRecordForDevice(String deviceId, Integer heartRate, Timestamp timestamp) {
+    boolean saveRecordForDevice(String deviceId, Integer heartRate, LocalDateTime timestamp) {
         Optional<Device> optionalDevice = deviceRepository.findById(deviceId);
         if (optionalDevice.isPresent()) {
             Device device = optionalDevice.get();

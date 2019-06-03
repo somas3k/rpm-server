@@ -20,6 +20,7 @@ import pl.edu.agh.im.remotepatientmonitor.monitoring.HeartRateRepository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -70,7 +71,7 @@ public class RemotePatientMonitoringApplicationServer implements ApplicationRunn
 			userRepository.save(user);
 			Device device = new Device("12341234", user, "Samsung Galaxy Watch");
 			deviceRepository.save(device);
-			HeartRateRecord record = new HeartRateRecord(70, Timestamp.from(Instant.now()));
+			HeartRateRecord record = new HeartRateRecord(70, LocalDateTime.now());
 			record.setDevice(device);
 			heartRateRepository.save(record);
 		}

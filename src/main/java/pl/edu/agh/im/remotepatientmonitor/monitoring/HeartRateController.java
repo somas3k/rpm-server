@@ -6,19 +6,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/heartrate")
 public class HeartRateController {
+    private static Logger LOGGER = Logger.getLogger(HeartRateController.class.getSimpleName());
 
     @Autowired
     private HeartRateService service;
 
     @GetMapping("/{deviceId}")
-    public ResponseEntity saveRecord(@PathVariable String deviceId, @RequestParam Integer heartRate, @RequestParam LocalDateTime timestamp){
-        System.out.println("Got record from " + deviceId + " bpm: " + heartRate + " timestamp: " + timestamp);
-        return service.saveRecordForDevice(deviceId, heartRate, Timestamp.valueOf(timestamp)) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public ResponseEntity saveRecord(@PathVariable String deviceId, @RequestParam Integer heartRate, @RequestParam String timestamp){
+        LOGGER.log(Level.INFO, "Got record from " + deviceId + " bpm: " + heartRate + " timestamp: " + timestamp);
+        return service.saveRecordForDevice(deviceId, heartRate, LocalDateTime.parse(timestamp)) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
 

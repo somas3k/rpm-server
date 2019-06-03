@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,9 +26,9 @@ public class HeartRateRecord {
     private Device device;
 
     private int heartRate;
-    private Timestamp timestamp;
+    private LocalDateTime timestamp;
 
-    public HeartRateRecord(int heartRate, Timestamp timestamp) {
+    public HeartRateRecord(int heartRate, LocalDateTime timestamp) {
         this.heartRate = heartRate;
         this.timestamp = timestamp;
     }
