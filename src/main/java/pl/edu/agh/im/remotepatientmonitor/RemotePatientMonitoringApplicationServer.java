@@ -18,8 +18,6 @@ import pl.edu.agh.im.remotepatientmonitor.domain.HeartRateRecord;
 import pl.edu.agh.im.remotepatientmonitor.monitoring.DeviceRepository;
 import pl.edu.agh.im.remotepatientmonitor.monitoring.HeartRateRepository;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
@@ -69,7 +67,7 @@ public class RemotePatientMonitoringApplicationServer implements ApplicationRunn
 		if(userRepository.findByEmail("test@test.com") == null) {
 			ApplicationUser user = new ApplicationUser(null, "test@test.com", "test", bCryptPasswordEncoder.encode("test"), true, null);
 			userRepository.save(user);
-			Device device = new Device("12341234", user, "Samsung Galaxy Watch");
+			Device device = new Device("rx2sVx2+RyqDEWV2vxZ2V1R6SUQ=", user, "Samsung Galaxy Watch");
 			deviceRepository.save(device);
 			HeartRateRecord record = new HeartRateRecord(70, LocalDateTime.now());
 			record.setDevice(device);

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.im.remotepatientmonitor.domain.Device;
 import pl.edu.agh.im.remotepatientmonitor.domain.HeartRateRecord;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
