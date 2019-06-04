@@ -1,5 +1,7 @@
 package pl.edu.agh.im.remotepatientmonitor.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +25,11 @@ public class HeartRateRecord {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Device device;
 
     private int heartRate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
     public HeartRateRecord(int heartRate, LocalDateTime timestamp) {
