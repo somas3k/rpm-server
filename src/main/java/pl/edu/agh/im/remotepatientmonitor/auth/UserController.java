@@ -72,14 +72,14 @@ public class UserController {
             if (username != null) {
                 ApplicationUser user = userRepository.findByEmail(username);
                 if (user.getEnabled()) {
-                    ResponseEntity.ok("Account already activated! Goto <a href=\"http://localhost:4200/auth/login\">Login page</a>");
+                    ResponseEntity.ok("Account already activated! Goto <a href=\"https://pulse24.herokuapp.com/auth/login\">Login page</a>");
                 }
                 user.setEnabled(true);
                 userRepository.save(user);
-                return ResponseEntity.ok("Account activated! :) Goto <a href=\"http://localhost:4200/auth/login\">Login page</a>");
+                return ResponseEntity.ok("Account activated! :) Goto <a href=\"https://pulse24.herokuapp.com/auth/login\">Login page</a>");
             }
         } catch (Throwable e) {
-            return ResponseEntity.ok("Something went wrong :(. Try to register another account. <a href=\"http://localhost:4200/auth/register\">Register page</a>");
+            return ResponseEntity.ok("Something went wrong :(. Try to register another account. <a href=\"https://pulse24.herokuapp.com/auth/register\">Register page</a>");
         }
         return ResponseEntity.badRequest().build();
     }
