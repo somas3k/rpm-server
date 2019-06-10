@@ -1,6 +1,5 @@
 package pl.edu.agh.im.remotepatientmonitor.monitoring;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,25 +16,46 @@ import java.util.Optional;
 @RequestMapping("/device")
 public class DeviceController {
 
-    @Autowired
-    private DeviceRepository repository;
+    private final DeviceRepository repository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @PostMapping("/{deviceId}")
-    public ResponseEntity saveDevice(@PathVariable String deviceId, @RequestParam String deviceName, Principal principal) {
+    public DeviceController(DeviceRepository repository, UserRepository userRepository) {
+        this.repository = repository;
+        this.userRepository = userRepository;
+    }
+
+    @DeleteMapping("/{deviceId}")
+    public ResponseEntity deleteDevice(@PathVariable String deviceId, Principal principal) {
         try {
             ApplicationUser user = Optional.ofNullable(userRepository.findByEmail(principal.getName()))
                     .orElseThrow(NoSuchElementException::new);
-            Device newDevice = new Device(deviceId, user, deviceName);
-            if (repository.save(newDevice) != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+            if (user != null && user.getDevices().stream().filter(device -> device.getId().equals(deviceId)).count() == 1) {
+                repository.deleteById(deviceId);
+                return ResponseEntity.ok().build();
             }
+            return ResponseEntity.badRequest().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/{deviceId}", params = {"deviceName"})
+    public ResponseEntity<Device> saveDevice(@PathVariable String deviceId, @RequestParam String deviceName, Principal principal) {
+        Device newDevice;
+        try {
+            ApplicationUser user = Optional.ofNullable(userRepository.findByEmail(principal.getName()))
+                    .orElseThrow(NoSuchElementException::new);
+            newDevice = new Device(deviceId, user, deviceName);
+            if (repository.findById(deviceId).isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            repository.save(newDevice);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(newDevice);
     }
 
     @GetMapping("")

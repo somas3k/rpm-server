@@ -14,12 +14,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.edu.agh.im.remotepatientmonitor.auth.AppUserDetailsService;
 import pl.edu.agh.im.remotepatientmonitor.auth.JWTAuthenticationFilter;
 import pl.edu.agh.im.remotepatientmonitor.auth.JWTAuthorizationFilter;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebMvc
@@ -39,7 +40,6 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-//                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
@@ -58,17 +58,11 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://pulse24.herokuapp.com"));
+        source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200", "https://pulse24.herokuapp.com")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
-                .allowedHeaders("Content-Type", "Date", "Total-Count", "loginInfo", "Authorization")
-                .exposedHeaders("Content-Type", "Date", "Total-Count", "loginInfo", "Authorization")
-                .maxAge(3600);
-    }
 }

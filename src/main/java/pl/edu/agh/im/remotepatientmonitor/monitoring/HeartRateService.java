@@ -1,24 +1,24 @@
 package pl.edu.agh.im.remotepatientmonitor.monitoring;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.im.remotepatientmonitor.domain.Device;
 import pl.edu.agh.im.remotepatientmonitor.domain.HeartRateRecord;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HeartRateService {
 
-    @Autowired
-    private HeartRateRepository heartRateRepository;
+    private final HeartRateRepository heartRateRepository;
 
-    @Autowired
-    private DeviceRepository deviceRepository;
+    private final DeviceRepository deviceRepository;
+
+    public HeartRateService(HeartRateRepository heartRateRepository, DeviceRepository deviceRepository) {
+        this.heartRateRepository = heartRateRepository;
+        this.deviceRepository = deviceRepository;
+    }
 
 
     boolean saveRecordForDevice(String deviceId, Integer heartRate, LocalDateTime timestamp) {
