@@ -1,5 +1,9 @@
 package pl.edu.agh.im.remotepatientmonitor.auth;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.im.remotepatientmonitor.domain.ApplicationUser;
 
+import java.security.Principal;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,9 +89,37 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
+    @PostMapping(value = "limit")
+    public ResponseEntity setLimit(@RequestBody Limit limit, Principal user) {
+        ApplicationUser appUser = userRepository.findByEmail(user.getName());
+        if (appUser != null) {
+            appUser.setHeartRateLimit(limit.getLimit());
+            userRepository.save(appUser);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping(value = "limit")
+    public ResponseEntity<Integer> getLimit(Principal user) {
+        ApplicationUser applicationUser = userRepository.findByEmail(user.getName());
+        if (applicationUser != null) {
+            return ResponseEntity.ok(applicationUser.getHeartRateLimit());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping
     public ResponseEntity getAll() {
         return ResponseEntity.ok(userRepository.findAll());
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class Limit {
+        private Integer limit;
     }
 }
 

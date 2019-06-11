@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.im.remotepatientmonitor.auth.UserRepository;
 import pl.edu.agh.im.remotepatientmonitor.domain.ApplicationUser;
 
+import javax.mail.MessagingException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ public class HeartRateController {
     }
 
     @GetMapping(value = "/{deviceId}", params = {"heartRate", "timestamp"})
-    public ResponseEntity saveRecord(@PathVariable String deviceId, @RequestParam Integer heartRate, @RequestParam String timestamp) {
+    public ResponseEntity saveRecord(@PathVariable String deviceId, @RequestParam Integer heartRate, @RequestParam String timestamp) throws MessagingException {
         LOGGER.log(Level.INFO, "Got record from " + deviceId + " bpm: " + heartRate + " timestamp: " + timestamp);
         return service.saveRecordForDevice(deviceId, heartRate, LocalDateTime.parse(timestamp)) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }

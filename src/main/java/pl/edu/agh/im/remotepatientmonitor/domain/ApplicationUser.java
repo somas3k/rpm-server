@@ -37,6 +37,8 @@ public class ApplicationUser {
     @JsonIgnore
     Long emailVerificationExpirationTime;
 
+    private Integer heartRateLimit = 160;
+
     @OneToMany(mappedBy = "user")
     List<Device> devices = new ArrayList<>();
 
